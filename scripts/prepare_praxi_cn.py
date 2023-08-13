@@ -40,7 +40,7 @@ def prepare(
     destination_path.mkdir(parents=True, exist_ok=True)
 
     print("Loading data file...")
-    with open("../data/praxi_cn_alpaca_style_qa.json", "r", encoding="utf-8") as file:
+    with open("../data_custom/praxi_cn_alpaca_style_qa.json", "r", encoding="utf-8") as file:
         data = json.load(file)
 
     print("Loading tokenizer...")
@@ -135,16 +135,11 @@ def generate_prompt(example):
     """Generates a standardized message to prompt the model with an instruction, optional input and a
     'response' field."""
 
-    if example["input"]:
-        return (
-            "Below is an instruction that describes a task, paired with an input that provides further context. "
-            "Write a response that appropriately completes the request.\n\n"
-            f"### Instruction:\n{example['instruction']}\n\n### Input:\n{example['input']}\n\n### Response:"
-        )
+    if "input" not in example:
+        raise RuntimeError("input required for training data")
     return (
-        "Below is an instruction that describes a task. "
-        "Write a response that appropriately completes the request.\n\n"
-        f"### Instruction:\n{example['instruction']}\n\n### Response:"
+        f"[INST] <<SYS>>\n{example['instruction']}\n<</SYS>>"
+        f"{example['input']} [/INST]"""
     )
 
 

@@ -15,6 +15,7 @@ sys.path.append(str(wd))
 from lit_gpt.tokenizer import Tokenizer
 
 DESTINATION_PATH = Path("data/praxi_cn")
+DATASET_PATH = Path("data_custom/praxi_cn_alpaca_style_qa.json")
 TEST_SPLIT_FRACTION = 0.03865  # to get exactly 200 test samples
 IGNORE_INDEX = -1
 MASK_INPUTS = False
@@ -23,6 +24,7 @@ SEED = 42
 
 def prepare(
     destination_path: Path = DESTINATION_PATH,
+    dataset_path: Path = DATASET_PATH,
     checkpoint_dir: Path = None,
     test_split_fraction: float = TEST_SPLIT_FRACTION,
     seed: int = SEED,
@@ -40,7 +42,7 @@ def prepare(
     destination_path.mkdir(parents=True, exist_ok=True)
 
     print("Loading data file...")
-    with open("../data_custom/praxi_cn_alpaca_style_qa.json", "r", encoding="utf-8") as file:
+    with open(dataset_path, "r", encoding="utf-8") as file:
         data = json.load(file)
 
     print("Loading tokenizer...")
